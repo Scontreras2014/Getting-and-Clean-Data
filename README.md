@@ -21,7 +21,7 @@ You should create one R script called run_analysis.R that does the following.
 ## Steps to run the script
 Please follow the following steps to run the script
 
-1. download run_analysis.R from the Github repository to your R work directory
+1. Download run_analysis.R from the Github repository to your R work directory
 2. Make sure you have the data require for this project unzipped in your work directory under the folder "UCI HAR Dataset"
 3. Load/source the script run_analysis.R into R
 4. execute the function GetCleanProject() in R console to generate the tidy datasource
@@ -70,11 +70,11 @@ The script follow these steps:
 
 ### Dimensions/Qualitative Variables
 
-* [1] "ActivityName"                
-* [2] "subjectID"
+* [1] "ActivityName": Name of any of the six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING)
+* [2] "subjectID": ID for each one of 30 volunteers
 
 ### Metrics/Quantitative Variabless
-* There is a total of 66 variables (Mean() and Std())
+* There is a total of 66 variables with the Mean() or Std() functions
 
  [3] "tBodyAcc-mean()-X"          
  [4] "tBodyAcc-mean()-Y"           "tBodyAcc-mean()-Z"           "tGravityAcc-mean()-X"       
