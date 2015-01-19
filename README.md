@@ -70,8 +70,15 @@ The script follow these steps:
 
 ### Dimensions/Qualitative Variables
 
-* [1] "ActivityName": Name of any of the six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING)
-* [2] "subjectID": ID for each one of 30 volunteers
+* [1] "ActivityName": Name of any of the six activities
+    1. WALKING
+    2. WALKING_UPSTAIRS
+    3. WALKING_DOWNSTAIRS
+    4. SITTING
+    5. STANDING
+    6. LAYING
+    
+* [2] "subjectID": ID for each one of 30 volunteers. It's number from 1 to 30
 
 ### Metrics/Quantitative Variabless
 * There is a total of 66 variables with the Mean() or Std() functions
