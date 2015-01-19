@@ -1,6 +1,6 @@
 README-file
 ======
-**README.md** 
+ 
 
 ## Getting and Cleaning Data - Project
 Here is the description of the project
@@ -40,10 +40,10 @@ The script follow these steps:
 6. Assing column names as in the features.txt file
 7. Add new column to indicate the source of record in this case X_test.txt file"
 8. Add new columns to indicate the subjectID and Activity info"
-9 Check number of columns 561 + 4
-10 Assign subjectID from subject file
-11 Assign ActicityID from label y_test.txt file
-12 Assign Acticity Name joining ActivityID to the activity file
+9. Check number of columns 561 + 4
+10. Assign subjectID from subject file
+11. Assign ActicityID from label y_test.txt file
+12. Assign Acticity Name joining ActivityID to the activity file
 
 ### Then let's load the Train files
 13. Read Train Labels file, check its dimensions and assign column names
@@ -54,12 +54,12 @@ The script follow these steps:
 17. Add new column to indicate the source of record in this case X_train.txt file"
 18. Add new columns to indicate the subjectID and Activity info"
 19 Check number of columns 561 + 4 = 545
-20 Assign subjectID from subject file
-21 Assign ActicityID from label y_train.txt file
-22 Assign Acticity Name joining ActivityID to the activity file
+20. Assign subjectID from subject file
+21. Assign ActicityID from label y_train.txt file
+22. Assign Acticity Name joining ActivityID to the activity file
 
 ### Merge Test and Train data
-23 check both table dim the number of columns much match
-24 Merge files: X_test and X_train
-25 Extracts only the measurements on the mean and standard deviation for each measurement
-26 Create tidy data set with the average of each variable for each activity and each subject.
+23. check both table dim the number of columns much match
+24. Merge files: X_test and X_train
+25. Extracts only the measurements on the mean and standard deviation for each measurement
+26. Create tidy data set with the average of each variable for each activity and each subject.
