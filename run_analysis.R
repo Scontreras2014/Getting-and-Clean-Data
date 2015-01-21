@@ -9,15 +9,18 @@ features <- read.table("./UCI HAR Dataset/features.txt", header=FALSE)
 dim(features)  #  561   2
 colnames(features) <- c("featuresID","featuresName")
 
+
 # 2. Read Activity Labels file, check its dimensions and assign column names
 Activity <- read.table("./UCI HAR Dataset/activity_labels.txt", header=FALSE)
 dim(Activity)  #  6   2
 colnames(Activity) <- c("activityID","ActivityName")
+unique(Activity$ActivityName)
 
 # 3. Read Test Labels file, check its dimensions and assign column names
 y_test <- read.table("./UCI HAR Dataset/test/y_test.txt", header=FALSE)
 dim(y_test)  #  2947    1
 colnames(y_test) <- c("activityID")
+unique(y_test$activityID)
 
 # 4. Read Subject Test file, check its dimensions and assign column names 
 subject_test <- read.table("./UCI HAR Dataset/test/subject_test.txt", header=FALSE)
@@ -107,28 +110,71 @@ dim(merged_observations) # 10299   565
 # 25 Extracts only the measurements on the mean and standard deviation for each measurement
 MeanStd_observations <- select(merged_observations, subjectID, ActivityName, contains("mean()"), contains("std()")) 
 
-dim(MeanStd_observations) # 10299    68
-
+dim(MeanStd_observations) # 10,299    68
+colnames(MeanStd_observations)
 
 # 26 Create tidy data set with the average of each variable for each activity and each subject.
+library("tidyr")
+
+# 26.1 Gather all 65 mean() and std() features into a single column called feature 
+# 26.2 Parse the feature column into "Feature","Funtion" (Mean, Std) ,"axial" (X,Y,Z)
+
+tinydb <- MeanStd_observations %>%
+    gather(feature,Value,3:68,na.rm= TRUE) %>%
+    separate(feature, c("Feature","Funtion","axial")) 
+
+dim(tinydb) # 679,734      6
+colnames(tinydb)
+
+# 26.3 Parse the rest of the feature column to identify the "Domain", "Motion", "signals", "Other" for the rest of the string
+
+tinydb$Feature <- gsub("Gravity", "Gravity-", tinydb$Feature)
+tinydb$Feature <- gsub("Body", "Body-", tinydb$Feature)
+tinydb$Feature <- gsub("Acc", "Acc-", tinydb$Feature)
+tinydb$Feature <- gsub("Gyro", "Gyro-", tinydb$Feature)
+tinydb$Feature <- gsub("Body-Body-", "Body-", tinydb$Feature)
+tinydb$Feature <- gsub("f", "f-", tinydb$Feature)
+tinydb$Feature <- gsub("t", "t-", tinydb$Feature)
+tinydb$Feature <- gsub("Gravit-y", "Gravity", tinydb$Feature)
 
 
-by_ActivitySubject <- group_by(MeanStd_observations, ActivityName, subjectID) 
+dim(tinydb) #  679,734      9
 
-dim(by_ActivitySubject)
+# 26.4 Create new columnms found on step 29 and calculate the average of the values
 
-tinydb <- summarise_each(by_ActivitySubject, funs(mean))
+tinyds <- tinydb %>% 
+    separate(Feature, c("Domain","Motion","signals","Other")) %>% 
+    group_by(ActivityName, subjectID, Domain, Motion, signals, Other, Funtion, axial) %>%
+    summarise(mean(Value))
 
-#dim(tinydb) # [1] 180  68
-#colnames(tinydb)
-#unique(tinydb$ActivityName)
-#unique(tinydb$subjectID)
+
+# 26.5 Check dimensions and uniqur values for each column
+
+dim(tinyds) #11,880   9  
+colnames(tinyds)
+
+unique(tinyds$ActivityName)
+unique(tinyds$subjectID)
+unique(tinyds$Domain) # "f" "t"
+tinyds$Domain <- gsub("t", "time", tinyds$Domain)
+tinyds$Domain <- gsub("f", "frequency", tinyds$Domain)
+
+unique(tinyds$Motion)
+unique(tinyds$signals) # "Acc"  "Gyro"
+tinyds$signals <- gsub("Acc", "Acceleration", tinyds$signals)
+tinyds$signals <- gsub("Gyro", "Gravitational", tinyds$signals)
+
+unique(tinyds$Other)
+unique(tinyds$Funtion)
+unique(tinyds$axial)
+
+# 26.6 Create tiny text file with final data source.
 
 fn <- "./TrainAndTest_Tiny.txt"
 if (file.exists(fn)) file.remove(fn)
 
-write.table(tinydb, file = "./TrainAndTest_Tiny.txt", row.name=FALSE)
+write.table(tinyds, file = "./TrainAndTest_Tiny.txt", row.name=FALSE)
 
-tinydb
+tinyds
 
 }
